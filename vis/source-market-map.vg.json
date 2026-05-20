@@ -1,0 +1,239 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 620,
+  "height": 390,
+  "title": {
+    "text": "Malaysia’s visitor markets were regionally concentrated",
+    "subtitle": "Circle size shows arrivals from each source market; use the dropdown to switch year",
+    "anchor": "start",
+    "fontSize": 16,
+    "subtitleFontSize": 12,
+    "font": "Inter",
+    "subtitleFont": "Inter",
+    "color": "#17324d",
+    "subtitleColor": "#5f6f7f",
+    "subtitlePadding": 6,
+    "offset": 16
+  },
+  "params": [
+    {
+      "name": "SelectedYear",
+      "value": "2024",
+      "bind": {
+        "input": "select",
+        "options": ["2024", "2023"],
+        "name": "Select year: "
+      }
+    }
+  ],
+  "projection": {
+    "type": "mercator",
+    "center": [105, 5],
+    "scale": 330,
+    "translate": [310, 195]
+  },
+  "layer": [
+    {
+      "data": {
+        "sphere": true
+      },
+      "mark": {
+        "type": "geoshape",
+        "fill": "#e8f4f5",
+        "stroke": "#c7d8dc",
+        "strokeWidth": 0.5
+      }
+    },
+    {
+      "data": {
+        "graticule": {
+          "step": [20, 20]
+        }
+      },
+      "mark": {
+        "type": "geoshape",
+        "stroke": "#d6e2e5",
+        "strokeWidth": 0.6,
+        "opacity": 0.75
+      }
+    },
+    {
+      "data": {
+        "url": "data/world-110m.json",
+        "format": {
+          "type": "topojson",
+          "feature": "countries"
+        }
+      },
+      "mark": {
+        "type": "geoshape",
+        "fill": "#f3eadf",
+        "stroke": "#7b8794",
+        "strokeWidth": 0.55
+      }
+    },
+    {
+      "data": {
+        "url": "data/source-market-arrivals.csv"
+      },
+      "transform": [
+        {
+          "calculate": "SelectedYear == '2024' ? datum['Arrivals in 2024'] : datum['Arrivals in 2023']",
+          "as": "Selected arrivals"
+        },
+        {
+          "calculate": "SelectedYear == '2024' ? datum['Rank in 2024'] : datum['Rank in 2023']",
+          "as": "Selected rank"
+        },
+        {
+          "calculate": "datum['Selected rank'] <= 3 ? 'Top three source markets' : 'Other source markets'",
+          "as": "Market group"
+        }
+      ],
+      "mark": {
+        "type": "circle",
+        "opacity": 0.78,
+        "stroke": "#ffffff",
+        "strokeWidth": 1.4
+      },
+      "encoding": {
+        "longitude": {
+          "field": "Longitude",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "Latitude",
+          "type": "quantitative"
+        },
+        "size": {
+          "field": "Selected arrivals",
+          "type": "quantitative",
+          "title": "Visitor arrivals",
+          "scale": {
+            "range": [70, 2600]
+          },
+          "legend": {
+            "orient": "bottom",
+            "labelFont": "Inter",
+            "titleFont": "Inter"
+          }
+        },
+        "color": {
+          "field": "Market group",
+          "type": "nominal",
+          "title": null,
+          "scale": {
+            "domain": ["Top three source markets", "Other source markets"],
+            "range": ["#0f766e", "#9fd5cc"]
+          },
+          "legend": {
+            "orient": "bottom",
+            "labelFont": "Inter"
+          }
+        },
+        "tooltip": [
+          {
+            "field": "Country",
+            "type": "nominal"
+          },
+          {
+            "field": "Selected rank",
+            "type": "quantitative",
+            "title": "Rank",
+            "format": ".0f"
+          },
+          {
+            "field": "Selected arrivals",
+            "type": "quantitative",
+            "title": "Visitor arrivals",
+            "format": ","
+          },
+          {
+            "field": "Growth percent(%)",
+            "type": "quantitative",
+            "title": "Growth from 2023 to 2024 (%)",
+            "format": ".1f"
+          }
+        ]
+      }
+    },
+    {
+      "data": {
+        "url": "data/source-market-arrivals.csv"
+      },
+      "transform": [
+        {
+          "calculate": "SelectedYear == '2024' ? datum['Rank in 2024'] : datum['Rank in 2023']",
+          "as": "Selected rank"
+        },
+        {
+          "filter": "datum['Selected rank'] <= 5"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "dx": 8,
+        "font": "Inter",
+        "fontSize": 10,
+        "fontWeight": 700,
+        "color": "#17324d"
+      },
+      "encoding": {
+        "longitude": {
+          "field": "Longitude",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "Latitude",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "Country"
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "Longitude": 113,
+            "Latitude": 28,
+            "Note": "Top markets cluster around\nSoutheast and East Asia"
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "top",
+        "font": "Inter",
+        "fontSize": 10,
+        "fontWeight": 600,
+        "lineBreak": "\n",
+        "color": "#6f8090"
+      },
+      "encoding": {
+        "longitude": {
+          "field": "Longitude",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "Latitude",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "Note"
+        }
+      }
+    }
+  ],
+  "config": {
+    "font": "Inter",
+    "background": "transparent",
+    "view": {
+      "stroke": null
+    }
+  }
+}

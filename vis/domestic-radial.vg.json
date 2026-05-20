@@ -1,0 +1,271 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 620,
+  "height": 390,
+  "title": {
+    "text": "Domestic tourism grew strongly in 2024",
+    "subtitle": "Radial bars compare 2024 growth against 2023 for domestic arrivals and spending",
+    "anchor": "start",
+    "fontSize": 16,
+    "subtitleFontSize": 12,
+    "font": "Inter",
+    "subtitleFont": "Inter",
+    "color": "#17324d",
+    "subtitleColor": "#5f6f7f",
+    "subtitlePadding": 6,
+    "offset": 16
+  },
+  "data": {
+    "url": "data/domestic-tourism-summary.csv"
+  },
+  "transform": [
+    {
+      "fold": [
+        "Domestic Visitor Arrivals (million)",
+        "Domestic Spending (Malaysian ringgit billion)"
+      ],
+      "as": ["Metric field", "Value"]
+    },
+    {
+      "calculate": "datum['Metric field'] == 'Domestic Visitor Arrivals (million)' ? 'Domestic visitor arrivals' : 'Domestic spending'",
+      "as": "Metric"
+    },
+    {
+      "pivot": "Year",
+      "value": "Value",
+      "groupby": ["Metric"]
+    },
+    {
+      "calculate": "(datum['2024'] - datum['2023']) / datum['2023'] * 100",
+      "as": "Growth percent"
+    },
+    {
+      "calculate": "datum.Metric == 'Domestic visitor arrivals' ? 150 : 95",
+      "as": "Outer radius"
+    },
+    {
+      "calculate": "datum.Metric == 'Domestic visitor arrivals' ? 118 : 63",
+      "as": "Inner radius"
+    },
+    {
+      "calculate": "datum.Metric == 'Domestic visitor arrivals' ? 'Visitors: ' + format(datum['2024'], '.1f') + ' million' : 'Spending: RM' + format(datum['2024'], '.1f') + ' billion'",
+      "as": "Current value label"
+    },
+    {
+      "calculate": "format(datum['Growth percent'], '.1f') + '% growth'",
+      "as": "Growth label"
+    }
+  ],
+  "layer": [
+    {
+      "mark": {
+        "type": "arc",
+        "cornerRadius": 8,
+        "color": "#edf2f4"
+      },
+      "encoding": {
+        "theta": {
+          "datum": 30,
+          "type": "quantitative",
+          "scale": {
+            "domain": [0, 30]
+          }
+        },
+        "radius": {
+          "field": "Outer radius",
+          "type": "quantitative"
+        },
+        "radius2": {
+          "field": "Inner radius"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "arc",
+        "cornerRadius": 8
+      },
+      "encoding": {
+        "theta": {
+          "field": "Growth percent",
+          "type": "quantitative",
+          "scale": {
+            "domain": [0, 30]
+          }
+        },
+        "radius": {
+          "field": "Outer radius",
+          "type": "quantitative"
+        },
+        "radius2": {
+          "field": "Inner radius"
+        },
+        "color": {
+          "field": "Metric",
+          "type": "nominal",
+          "title": null,
+          "scale": {
+            "domain": [
+              "Domestic visitor arrivals",
+              "Domestic spending"
+            ],
+            "range": [
+              "#c56b3c",
+              "#d4941f"
+            ]
+          },
+          "legend": {
+            "orient": "bottom",
+            "labelFont": "Inter"
+          }
+        },
+        "tooltip": [
+          {
+            "field": "Metric",
+            "type": "nominal"
+          },
+          {
+            "field": "2023",
+            "type": "quantitative",
+            "title": "2023 value",
+            "format": ".1f"
+          },
+          {
+            "field": "2024",
+            "type": "quantitative",
+            "title": "2024 value",
+            "format": ".1f"
+          },
+          {
+            "field": "Growth percent",
+            "type": "quantitative",
+            "title": "Growth from 2023 to 2024 (%)",
+            "format": ".1f"
+          }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "center",
+        "baseline": "middle",
+        "font": "Inter",
+        "fontSize": 30,
+        "fontWeight": 700,
+        "color": "#17324d"
+      },
+      "encoding": {
+        "text": {
+          "value": "2024"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "center",
+        "baseline": "middle",
+        "dy": 32,
+        "font": "Inter",
+        "fontSize": 11,
+        "fontWeight": 600,
+        "color": "#6f8090"
+      },
+      "encoding": {
+        "text": {
+          "value": "Domestic recovery"
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.Metric == 'Domestic visitor arrivals'"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "dx": 178,
+        "dy": -55,
+        "font": "Inter",
+        "fontSize": 11,
+        "fontWeight": 700,
+        "color": "#9a4f2d"
+      },
+      "encoding": {
+        "text": {
+          "field": "Growth label"
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.Metric == 'Domestic spending'"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "dx": 125,
+        "dy": 20,
+        "font": "Inter",
+        "fontSize": 11,
+        "fontWeight": 700,
+        "color": "#a86d00"
+      },
+      "encoding": {
+        "text": {
+          "field": "Growth label"
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "x": -205,
+            "y": 140,
+            "Note": "Both domestic indicators\nexpanded by more than 20%"
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "top",
+        "font": "Inter",
+        "fontSize": 10,
+        "fontWeight": 600,
+        "lineBreak": "\n",
+        "color": "#6f8090"
+      },
+      "encoding": {
+        "x": {
+          "field": "x",
+          "type": "quantitative",
+          "axis": null
+        },
+        "y": {
+          "field": "y",
+          "type": "quantitative",
+          "axis": null
+        },
+        "text": {
+          "field": "Note"
+        }
+      }
+    }
+  ],
+  "config": {
+    "font": "Inter",
+    "background": "transparent",
+    "view": {
+      "stroke": null
+    }
+  }
+}

@@ -1,0 +1,7 @@
+Dataset,Source organisation,Source document,Source link,Used for visualization,Notes
+Tourism Recovery,Tourism Malaysia,Visitor Performance to Malaysia Jan-Dec 2024,https://data.tourism.gov.my/frontend/pdf/Infographic_visitor_performance_to_malaysia_jan-dec_2024.pdf,"Radial Recovery rings, indexed line chart",Indexed columns are calculated
+Monthly Visitor Arrivals,Tourism Malaysia,Malaysia Tourism Statistics in Brief 2024,"https://data.tourism.gov.my/frontend/pdf/New_Final_Malaysia%20Tourism%20Statistics%20in%20Brief%202024.pdf",Heatmap,2023 and 2024 only
+Source Market Arrivals,Tourism Malaysia,Malaysia Tourism Statistics in Brief 2024,"https://data.tourism.gov.my/frontend/pdf/New_Final_Malaysia%20Tourism%20Statistics%20in%20Brief%202024.pdf","Bump chart, source map",Latitude/Longitude added for map placement
+Visitor Expenditure Categories,Tourism Malaysia,Malaysia Tourism Statistics in Brief 2024,"https://data.tourism.gov.my/frontend/pdf/New_Final_Malaysia%20Tourism%20Statistics%20in%20Brief%202024.pdf",Spending chart,Values in Malaysia ringgit million
+State Hotel Guests,Tourism Malaysia,Malaysia Tourism Statistics in Brief 2024,"https://data.tourism.gov.my/frontend/pdf/New_Final_Malaysia%20Tourism%20Statistics%20in%20Brief%202024.pdf","State map, lollipop chart, scatterplot","Hotel guests, not all tourists"
+Domestic Tourism Summary,DOSM,Domestic Tourism annotation/context,"https://www.dosm.gov.my/site/downloadrelease?admin_view=&id=domestic-tourism-survey-states-2024&lang=English",Second official data source,

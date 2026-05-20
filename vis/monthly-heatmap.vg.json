@@ -1,0 +1,290 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 620,
+  "height": 285,
+  "title": {
+    "text": "Visitor arrivals were strongest toward year end",
+    "subtitle": "Monthly visitor arrivals in 2023 and 2024",
+    "anchor": "start",
+    "fontSize": 16,
+    "subtitleFontSize": 12,
+    "font": "Inter",
+    "subtitleFont": "Inter",
+    "color": "#17324d",
+    "subtitleColor": "#5f6f7f",
+    "subtitlePadding": 6,
+    "offset": 16
+  },
+  "layer": [
+    {
+      "data": {
+        "url": "data/monthly-visitor-arrivals.csv"
+      },
+      "transform": [
+        {
+          "fold": [
+            "Visitor Arrivals in 2024",
+            "Visitor Arrivals in 2023"
+          ],
+          "as": ["Year field", "Visitor arrivals"]
+        },
+        {
+          "calculate": "datum['Year field'] == 'Visitor Arrivals in 2024' ? '2024' : '2023'",
+          "as": "Year"
+        },
+        {
+          "calculate": "datum['Visitor arrivals'] / 1000000",
+          "as": "Visitor arrivals in millions"
+        }
+      ],
+      "mark": {
+        "type": "rect",
+        "stroke": "#ffffff",
+        "strokeWidth": 2
+      },
+      "encoding": {
+        "x": {
+          "field": "Month",
+          "type": "ordinal",
+          "title": null,
+          "sort": [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December"
+          ],
+          "axis": {
+            "labelAngle": -35,
+            "labelColor": "#475569"
+          }
+        },
+        "y": {
+          "field": "Year",
+          "type": "nominal",
+          "title": null,
+          "sort": ["2024", "2023"],
+          "axis": {
+            "labelColor": "#475569"
+          }
+        },
+        "color": {
+          "field": "Visitor arrivals in millions",
+          "type": "quantitative",
+          "title": "Visitors (millions)",
+          "scale": {
+            "scheme": "blues"
+          },
+          "legend": {
+            "orient": "bottom",
+            "labelFont": "Inter",
+            "titleFont": "Inter"
+          }
+        },
+        "tooltip": [
+          {
+            "field": "Month",
+            "type": "ordinal"
+          },
+          {
+            "field": "Year",
+            "type": "nominal"
+          },
+          {
+            "field": "Visitor arrivals",
+            "type": "quantitative",
+            "format": ",",
+            "title": "Visitor arrivals"
+          },
+          {
+            "field": "Growth percent (%)",
+            "type": "quantitative",
+            "format": ".1f",
+            "title": "Growth from 2023 to 2024 (%)"
+          }
+        ]
+      }
+    },
+    {
+      "data": {
+        "url": "data/monthly-visitor-arrivals.csv"
+      },
+      "transform": [
+        {
+          "fold": [
+            "Visitor Arrivals in 2024",
+            "Visitor Arrivals in 2023"
+          ],
+          "as": ["Year field", "Visitor arrivals"]
+        },
+        {
+          "calculate": "datum['Year field'] == 'Visitor Arrivals in 2024' ? '2024' : '2023'",
+          "as": "Year"
+        },
+        {
+          "calculate": "datum['Visitor arrivals'] / 1000000",
+          "as": "Visitor arrivals in millions"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "font": "Inter",
+        "fontSize": 10,
+        "fontWeight": 600,
+        "color": "#17324d"
+      },
+      "encoding": {
+        "x": {
+          "field": "Month",
+          "type": "ordinal",
+          "sort": [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December"
+          ]
+        },
+        "y": {
+          "field": "Year",
+          "type": "nominal",
+          "sort": ["2024", "2023"]
+        },
+        "text": {
+          "field": "Visitor arrivals in millions",
+          "type": "quantitative",
+          "format": ".1f"
+        }
+      }
+    },
+    {
+      "data": {
+        "url": "data/monthly-visitor-arrivals.csv"
+      },
+      "transform": [
+        {
+          "fold": [
+            "Visitor Arrivals in 2024",
+            "Visitor Arrivals in 2023"
+          ],
+          "as": ["Year field", "Visitor arrivals"]
+        },
+        {
+          "calculate": "datum['Year field'] == 'Visitor Arrivals in 2024' ? '2024' : '2023'",
+          "as": "Year"
+        },
+        {
+          "filter": "datum.Year == '2024' && (datum.Month == 'June' || datum.Month == 'December')"
+        }
+      ],
+      "mark": {
+        "type": "rect",
+        "fillOpacity": 0,
+        "stroke": "#17324d",
+        "strokeWidth": 2,
+        "opacity": 0.8
+      },
+      "encoding": {
+        "x": {
+          "field": "Month",
+          "type": "ordinal",
+          "sort": [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December"
+          ]
+        },
+        "y": {
+          "field": "Year",
+          "type": "nominal",
+          "sort": ["2024", "2023"]
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "Month": "June",
+            "Year": "2024",
+            "Note": "Fastest growth\n+49.2%"
+          },
+          {
+            "Month": "December",
+            "Year": "2024",
+            "Note": "Highest 2024\nmonth"
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "center",
+        "baseline": "bottom",
+        "dy": -38,
+        "font": "Inter",
+        "fontSize": 10,
+        "fontWeight": 600,
+        "lineBreak": "\n",
+        "color": "#6f8090"
+      },
+      "encoding": {
+        "x": {
+          "field": "Month",
+          "type": "ordinal",
+          "sort": [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December"
+          ]
+        },
+        "y": {
+          "field": "Year",
+          "type": "nominal",
+          "sort": ["2024", "2023"]
+        },
+        "text": {
+          "field": "Note"
+        }
+      }
+    }
+  ],
+  "config": {
+    "font": "Inter",
+    "background": "transparent",
+    "view": {
+      "stroke": null
+    }
+  }
+}

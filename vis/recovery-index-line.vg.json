@@ -1,0 +1,384 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 620,
+  "height": 360,
+  "title": {
+    "text": "Tourism receipts recovered faster than arrivals",
+    "subtitle": "Index compares 2019–2024 against the 2019 baseline",
+    "anchor": "start",
+    "fontSize": 16,
+    "subtitleFontSize": 12,
+    "font": "Inter",
+    "subtitleFont": "Inter",
+    "color": "#17324d",
+    "subtitleColor": "#5f6f7f",
+    "subtitlePadding": 6,
+    "offset": 16
+  },
+  "layer": [
+    {
+      "data": {
+        "values": [
+          { "Event year": 2020 },
+          { "Event year": 2022 },
+          { "Event year": 2023.85 }
+        ]
+      },
+      "mark": {
+        "type": "rule",
+        "strokeDash": [4, 5],
+        "strokeWidth": 1,
+        "color": "#c9d3dc",
+        "opacity": 0.7
+      },
+      "encoding": {
+        "x": {
+          "field": "Event year",
+          "type": "quantitative",
+          "scale": {
+            "domain": [2019, 2024.7]
+          }
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "Event year": 2020.05,
+            "Event note": "2020:\ntravel shock",
+            "Event label y": 8
+          },
+          {
+            "Event year": 2022.05,
+            "Event note": "2022:\ninternational travel\nresumed",
+            "Event label y": 43
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "top",
+        "dx": 4,
+        "font": "Inter",
+        "fontSize": 10,
+        "lineBreak": "\n",
+        "color": "#95a1ad",
+        "opacity": 0.9
+      },
+      "encoding": {
+        "x": {
+          "field": "Event year",
+          "type": "quantitative",
+          "scale": {
+            "domain": [2019, 2024.7]
+          }
+        },
+        "y": {
+          "field": "Event label y",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "Event note"
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "Event year": 2023.05,
+            "Event note": "Dec 2023:\nmonthly arrivals\nexceeded Dec 2019",
+            "Event label y": 126
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "top",
+        "dx": 4,
+        "font": "Inter",
+        "fontSize": 10,
+        "lineBreak": "\n",
+        "color": "#95a1ad",
+        "opacity": 0.9
+      },
+      "encoding": {
+        "x": {
+          "field": "Event year",
+          "type": "quantitative",
+          "scale": {
+            "domain": [2019, 2024.7]
+          }
+        },
+        "y": {
+          "field": "Event label y",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "Event note"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "rule",
+        "strokeDash": [6, 4],
+        "strokeWidth": 1.2,
+        "color": "#8da2b5"
+      },
+      "encoding": {
+        "y": {
+          "datum": 100
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "bottom",
+        "dx": 6,
+        "dy": -4,
+        "font": "Inter",
+        "fontSize": 11,
+        "fontWeight": 600,
+        "color": "#6f8090"
+      },
+      "encoding": {
+        "x": {
+          "datum": 2019.15
+        },
+        "y": {
+          "datum": 100
+        },
+        "text": {
+          "value": "2019 baseline"
+        }
+      }
+    },
+    {
+      "data": {
+        "url": "data/tourism-recovery.csv"
+      },
+      "transform": [
+        {
+          "calculate": "toNumber(datum.Year)",
+          "as": "Year number"
+        },
+        {
+          "fold": [
+            "Arrivals Index (2019 = 100)",
+            "Receipts Index (2019 = 100)"
+          ],
+          "as": ["Series", "Index value"]
+        },
+        {
+          "calculate": "datum.Series == 'Arrivals Index (2019 = 100)' ? 'Tourist arrivals' : 'Tourist receipts'",
+          "as": "Display series"
+        }
+      ],
+      "mark": {
+        "type": "line",
+        "strokeWidth": 4,
+        "opacity": 1
+      },
+      "encoding": {
+        "x": {
+          "field": "Year number",
+          "type": "quantitative",
+          "scale": {
+            "domain": [2019, 2024.7]
+          },
+          "axis": {
+            "values": [2019, 2020, 2021, 2022, 2023, 2024],
+            "format": "d",
+            "title": null,
+            "labelColor": "#475569",
+            "tickColor": "#c9d3dc",
+            "domainColor": "#c9d3dc"
+          }
+        },
+        "y": {
+          "field": "Index value",
+          "type": "quantitative",
+          "scale": {
+            "domain": [0, 135]
+          },
+          "title": "Index value (2019 = 100)",
+          "axis": {
+            "gridColor": "#e8edf2",
+            "labelColor": "#475569",
+            "titleColor": "#334155"
+          }
+        },
+        "color": {
+          "field": "Display series",
+          "type": "nominal",
+          "title": null,
+          "scale": {
+            "domain": ["Tourist arrivals", "Tourist receipts"],
+            "range": ["#2b7bbb", "#d4941f"]
+          },
+          "legend": {
+            "orient": "bottom",
+            "symbolType": "circle",
+            "labelFont": "Inter"
+          }
+        },
+        "tooltip": [
+          {
+            "field": "Year number",
+            "type": "quantitative",
+            "title": "Year",
+            "format": "d"
+          },
+          {
+            "field": "Display series",
+            "type": "nominal",
+            "title": "Measure"
+          },
+          {
+            "field": "Index value",
+            "type": "quantitative",
+            "title": "Index value",
+            "format": ".1f"
+          }
+        ]
+      }
+    },
+    {
+      "data": {
+        "url": "data/tourism-recovery.csv"
+      },
+      "transform": [
+        {
+          "calculate": "toNumber(datum.Year)",
+          "as": "Year number"
+        },
+        {
+          "fold": [
+            "Arrivals Index (2019 = 100)",
+            "Receipts Index (2019 = 100)"
+          ],
+          "as": ["Series", "Index value"]
+        },
+        {
+          "calculate": "datum.Series == 'Arrivals Index (2019 = 100)' ? 'Tourist arrivals' : 'Tourist receipts'",
+          "as": "Display series"
+        }
+      ],
+      "mark": {
+        "type": "point",
+        "filled": true,
+        "size": 90
+      },
+      "encoding": {
+        "x": {
+          "field": "Year number",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "Index value",
+          "type": "quantitative"
+        },
+        "color": {
+          "field": "Display series",
+          "type": "nominal",
+          "scale": {
+            "domain": ["Tourist arrivals", "Tourist receipts"],
+            "range": ["#2b7bbb", "#d4941f"]
+          },
+          "legend": null
+        },
+        "tooltip": [
+          {
+            "field": "Year number",
+            "type": "quantitative",
+            "title": "Year",
+            "format": "d"
+          },
+          {
+            "field": "Display series",
+            "type": "nominal",
+            "title": "Measure"
+          },
+          {
+            "field": "Index value",
+            "type": "quantitative",
+            "title": "Index value",
+            "format": ".1f"
+          }
+        ]
+      }
+    },
+    {
+      "data": {
+        "url": "data/tourism-recovery.csv"
+      },
+      "transform": [
+        {
+          "calculate": "toNumber(datum.Year)",
+          "as": "Year number"
+        },
+        {
+          "fold": [
+            "Arrivals Index (2019 = 100)",
+            "Receipts Index (2019 = 100)"
+          ],
+          "as": ["Series", "Index value"]
+        },
+        {
+          "filter": "datum['Year number'] == 2024"
+        },
+        {
+          "calculate": "datum.Series == 'Arrivals Index (2019 = 100)' ? 'Arrivals index: ' + format(datum['Index value'], '.1f') : 'Receipts index: ' + format(datum['Index value'], '.1f')",
+          "as": "End label"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "dx": 10,
+        "font": "Inter",
+        "fontSize": 11,
+        "fontWeight": 700
+      },
+      "encoding": {
+        "x": {
+          "field": "Year number",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "Index value",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "End label"
+        },
+        "color": {
+          "field": "Series",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "Arrivals Index (2019 = 100)",
+              "Receipts Index (2019 = 100)"
+            ],
+            "range": ["#2b7bbb", "#a86d00"]
+          },
+          "legend": null
+        }
+      }
+    }
+  ],
+  "config": {
+    "font": "Inter",
+    "background": "transparent",
+    "view": {
+      "stroke": null
+    }
+  }
+}

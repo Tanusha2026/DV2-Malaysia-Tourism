@@ -1,0 +1,595 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 620,
+  "height": 420,
+  "title": {
+    "text": "Major states had different hotel tourism profiles",
+    "subtitle": "Radar comparison of selected state-level hotel guest indicators in 2024",
+    "anchor": "start",
+    "fontSize": 16,
+    "subtitleFontSize": 12,
+    "font": "Inter",
+    "subtitleFont": "Inter",
+    "color": "#17324d",
+    "subtitleColor": "#5f6f7f",
+    "subtitlePadding": 6,
+    "offset": 16
+  },
+  "layer": [
+    {
+      "data": {
+        "values": [
+          {"Ring": 25, "Metric order": 1}, {"Ring": 25, "Metric order": 2}, {"Ring": 25, "Metric order": 3}, {"Ring": 25, "Metric order": 4}, {"Ring": 25, "Metric order": 5},
+          {"Ring": 50, "Metric order": 1}, {"Ring": 50, "Metric order": 2}, {"Ring": 50, "Metric order": 3}, {"Ring": 50, "Metric order": 4}, {"Ring": 50, "Metric order": 5},
+          {"Ring": 75, "Metric order": 1}, {"Ring": 75, "Metric order": 2}, {"Ring": 75, "Metric order": 3}, {"Ring": 75, "Metric order": 4}, {"Ring": 75, "Metric order": 5},
+          {"Ring": 100, "Metric order": 1}, {"Ring": 100, "Metric order": 2}, {"Ring": 100, "Metric order": 3}, {"Ring": 100, "Metric order": 4}, {"Ring": 100, "Metric order": 5}
+        ]
+      },
+      "transform": [
+        {
+          "calculate": "1.57079632679 - (datum['Metric order'] - 1) / 5 * 6.28318530718",
+          "as": "Angle"
+        },
+        {
+          "calculate": "cos(datum.Angle) * datum.Ring",
+          "as": "x"
+        },
+        {
+          "calculate": "sin(datum.Angle) * datum.Ring",
+          "as": "y"
+        }
+      ],
+      "mark": {
+        "type": "line",
+        "interpolate": "linear-closed",
+        "strokeWidth": 1,
+        "color": "#d8e2ea",
+        "opacity": 0.9
+      },
+      "encoding": {
+        "x": {
+          "field": "x",
+          "type": "quantitative",
+          "scale": {"domain": [-130, 130]},
+          "axis": null
+        },
+        "y": {
+          "field": "y",
+          "type": "quantitative",
+          "scale": {"domain": [-130, 130]},
+          "axis": null
+        },
+        "detail": {
+          "field": "Ring",
+          "type": "quantitative"
+        },
+        "order": {
+          "field": "Metric order",
+          "type": "quantitative"
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {"Metric order": 1},
+          {"Metric order": 2},
+          {"Metric order": 3},
+          {"Metric order": 4},
+          {"Metric order": 5}
+        ]
+      },
+      "transform": [
+        {
+          "calculate": "1.57079632679 - (datum['Metric order'] - 1) / 5 * 6.28318530718",
+          "as": "Angle"
+        },
+        {
+          "calculate": "cos(datum.Angle) * 105",
+          "as": "x"
+        },
+        {
+          "calculate": "sin(datum.Angle) * 105",
+          "as": "y"
+        },
+        {
+          "calculate": "0",
+          "as": "Center"
+        }
+      ],
+      "mark": {
+        "type": "rule",
+        "strokeWidth": 1,
+        "color": "#d8e2ea",
+        "opacity": 0.9
+      },
+      "encoding": {
+        "x": {
+          "field": "Center",
+          "type": "quantitative",
+          "scale": {"domain": [-130, 130]},
+          "axis": null
+        },
+        "y": {
+          "field": "Center",
+          "type": "quantitative",
+          "scale": {"domain": [-130, 130]},
+          "axis": null
+        },
+        "x2": {"field": "x"},
+        "y2": {"field": "y"}
+      }
+    },
+    {
+      "data": {
+        "url": "data/state-hotel-guests.csv"
+      },
+      "transform": [
+        {
+          "filter": "datum.State == 'Kuala Lumpur' || datum.State == 'Pahang' || datum.State == 'Johor' || datum.State == 'Selangor'"
+        },
+        {
+          "calculate": "toNumber(datum['Total in 2024'])",
+          "as": "Total hotel guests"
+        },
+        {
+          "calculate": "toNumber(datum['Domestic in 2024'])",
+          "as": "Domestic hotel guests"
+        },
+        {
+          "calculate": "toNumber(datum['Foreign in 2024'])",
+          "as": "Foreign hotel guests"
+        },
+        {
+          "calculate": "toNumber(datum['Total Growth Percent(%)'])",
+          "as": "Total growth"
+        },
+        {
+          "calculate": "toNumber(datum['Foreign Growth Percent(%)'])",
+          "as": "Foreign growth"
+        },
+        {
+          "calculate": "datum['Domestic hotel guests'] / datum['Total hotel guests'] * 100",
+          "as": "Domestic share"
+        },
+        {
+          "calculate": "datum['Foreign hotel guests'] / datum['Total hotel guests'] * 100",
+          "as": "Foreign share"
+        },
+        {
+          "calculate": "datum['Total hotel guests'] / 21910522 * 100",
+          "as": "Total guest strength"
+        },
+        {
+          "calculate": "datum['Total growth'] / 19 * 100",
+          "as": "Total growth score"
+        },
+        {
+          "calculate": "(datum['Foreign growth'] + 15) / 54.4 * 100",
+          "as": "Foreign growth score"
+        },
+        {
+          "fold": [
+            "Total guest strength",
+            "Domestic share",
+            "Foreign share",
+            "Total growth score",
+            "Foreign growth score"
+          ],
+          "as": ["Indicator", "Score"]
+        },
+        {
+          "calculate": "datum.Indicator == 'Total guest strength' ? 'Total guests' : datum.Indicator == 'Domestic share' ? 'Domestic share' : datum.Indicator == 'Foreign share' ? 'Foreign share' : datum.Indicator == 'Total growth score' ? 'Total growth' : 'Foreign growth'",
+          "as": "Display indicator"
+        },
+        {
+          "calculate": "datum['Display indicator'] == 'Total guests' ? 1 : datum['Display indicator'] == 'Domestic share' ? 2 : datum['Display indicator'] == 'Foreign share' ? 3 : datum['Display indicator'] == 'Total growth' ? 4 : 5",
+          "as": "Metric order"
+        },
+        {
+          "calculate": "1.57079632679 - (datum['Metric order'] - 1) / 5 * 6.28318530718",
+          "as": "Angle"
+        },
+        {
+          "calculate": "cos(datum.Angle) * datum.Score",
+          "as": "x"
+        },
+        {
+          "calculate": "sin(datum.Angle) * datum.Score",
+          "as": "y"
+        }
+      ],
+      "mark": {
+        "type": "line",
+        "interpolate": "linear-closed",
+        "strokeWidth": 1,
+        "opacity": 0.18,
+        "fillOpacity": 0.12
+      },
+      "encoding": {
+        "x": {
+          "field": "x",
+          "type": "quantitative",
+          "scale": {"domain": [-130, 130]},
+          "axis": null
+        },
+        "y": {
+          "field": "y",
+          "type": "quantitative",
+          "scale": {"domain": [-130, 130]},
+          "axis": null
+        },
+        "order": {
+          "field": "Metric order",
+          "type": "quantitative"
+        },
+        "detail": {
+          "field": "State",
+          "type": "nominal"
+        },
+        "color": {
+          "field": "State",
+          "type": "nominal",
+          "scale": {
+            "domain": ["Kuala Lumpur", "Pahang", "Johor", "Selangor"],
+            "range": ["#17324d", "#d4941f", "#c56b3c", "#6f8090"]
+          },
+          "legend": null
+        },
+        "fill": {
+          "field": "State",
+          "type": "nominal",
+          "scale": {
+            "domain": ["Kuala Lumpur", "Pahang", "Johor", "Selangor"],
+            "range": ["#17324d", "#d4941f", "#c56b3c", "#6f8090"]
+          },
+          "legend": null
+        }
+      }
+    },
+    {
+      "data": {
+        "url": "data/state-hotel-guests.csv"
+      },
+      "transform": [
+        {
+          "filter": "datum.State == 'Kuala Lumpur' || datum.State == 'Pahang' || datum.State == 'Johor' || datum.State == 'Selangor'"
+        },
+        {
+          "calculate": "toNumber(datum['Total in 2024'])",
+          "as": "Total hotel guests"
+        },
+        {
+          "calculate": "toNumber(datum['Domestic in 2024'])",
+          "as": "Domestic hotel guests"
+        },
+        {
+          "calculate": "toNumber(datum['Foreign in 2024'])",
+          "as": "Foreign hotel guests"
+        },
+        {
+          "calculate": "toNumber(datum['Total Growth Percent(%)'])",
+          "as": "Total growth"
+        },
+        {
+          "calculate": "toNumber(datum['Foreign Growth Percent(%)'])",
+          "as": "Foreign growth"
+        },
+        {
+          "calculate": "datum['Domestic hotel guests'] / datum['Total hotel guests'] * 100",
+          "as": "Domestic share"
+        },
+        {
+          "calculate": "datum['Foreign hotel guests'] / datum['Total hotel guests'] * 100",
+          "as": "Foreign share"
+        },
+        {
+          "calculate": "datum['Total hotel guests'] / 21910522 * 100",
+          "as": "Total guest strength"
+        },
+        {
+          "calculate": "datum['Total growth'] / 19 * 100",
+          "as": "Total growth score"
+        },
+        {
+          "calculate": "(datum['Foreign growth'] + 15) / 54.4 * 100",
+          "as": "Foreign growth score"
+        },
+        {
+          "fold": [
+            "Total guest strength",
+            "Domestic share",
+            "Foreign share",
+            "Total growth score",
+            "Foreign growth score"
+          ],
+          "as": ["Indicator", "Score"]
+        },
+        {
+          "calculate": "datum.Indicator == 'Total guest strength' ? 'Total guests' : datum.Indicator == 'Domestic share' ? 'Domestic share' : datum.Indicator == 'Foreign share' ? 'Foreign share' : datum.Indicator == 'Total growth score' ? 'Total growth' : 'Foreign growth'",
+          "as": "Display indicator"
+        },
+        {
+          "calculate": "datum['Display indicator'] == 'Total guests' ? 1 : datum['Display indicator'] == 'Domestic share' ? 2 : datum['Display indicator'] == 'Foreign share' ? 3 : datum['Display indicator'] == 'Total growth' ? 4 : 5",
+          "as": "Metric order"
+        },
+        {
+          "calculate": "1.57079632679 - (datum['Metric order'] - 1) / 5 * 6.28318530718",
+          "as": "Angle"
+        },
+        {
+          "calculate": "cos(datum.Angle) * datum.Score",
+          "as": "x"
+        },
+        {
+          "calculate": "sin(datum.Angle) * datum.Score",
+          "as": "y"
+        },
+        {
+          "calculate": "datum['Display indicator'] == 'Total guests' ? format(datum['Total hotel guests'] / 1000000, '.1f') + ' million' : datum['Display indicator'] == 'Domestic share' ? format(datum['Domestic share'], '.1f') + '%' : datum['Display indicator'] == 'Foreign share' ? format(datum['Foreign share'], '.1f') + '%' : datum['Display indicator'] == 'Total growth' ? format(datum['Total growth'], '.1f') + '%' : format(datum['Foreign growth'], '.1f') + '%'",
+          "as": "Actual value"
+        }
+      ],
+      "mark": {
+        "type": "line",
+        "interpolate": "linear-closed",
+        "strokeWidth": 3,
+        "opacity": 0.9
+      },
+      "encoding": {
+        "x": {
+          "field": "x",
+          "type": "quantitative",
+          "scale": {"domain": [-130, 130]},
+          "axis": null
+        },
+        "y": {
+          "field": "y",
+          "type": "quantitative",
+          "scale": {"domain": [-130, 130]},
+          "axis": null
+        },
+        "order": {
+          "field": "Metric order",
+          "type": "quantitative"
+        },
+        "detail": {
+          "field": "State",
+          "type": "nominal"
+        },
+        "color": {
+          "field": "State",
+          "type": "nominal",
+          "title": null,
+          "scale": {
+            "domain": ["Kuala Lumpur", "Pahang", "Johor", "Selangor"],
+            "range": ["#17324d", "#d4941f", "#c56b3c", "#6f8090"]
+          },
+          "legend": {
+            "orient": "bottom",
+            "labelFont": "Inter"
+          }
+        },
+        "tooltip": [
+          {"field": "State", "type": "nominal"},
+          {"field": "Display indicator", "type": "nominal", "title": "Indicator"},
+          {"field": "Actual value", "type": "nominal", "title": "Actual value"},
+          {"field": "Score", "type": "quantitative", "format": ".1f", "title": "Radar score"}
+        ]
+      }
+    },
+    {
+      "data": {
+        "url": "data/state-hotel-guests.csv"
+      },
+      "transform": [
+        {
+          "filter": "datum.State == 'Kuala Lumpur' || datum.State == 'Pahang' || datum.State == 'Johor' || datum.State == 'Selangor'"
+        },
+        {
+          "calculate": "toNumber(datum['Total in 2024'])",
+          "as": "Total hotel guests"
+        },
+        {
+          "calculate": "toNumber(datum['Domestic in 2024'])",
+          "as": "Domestic hotel guests"
+        },
+        {
+          "calculate": "toNumber(datum['Foreign in 2024'])",
+          "as": "Foreign hotel guests"
+        },
+        {
+          "calculate": "toNumber(datum['Total Growth Percent(%)'])",
+          "as": "Total growth"
+        },
+        {
+          "calculate": "toNumber(datum['Foreign Growth Percent(%)'])",
+          "as": "Foreign growth"
+        },
+        {
+          "calculate": "datum['Domestic hotel guests'] / datum['Total hotel guests'] * 100",
+          "as": "Domestic share"
+        },
+        {
+          "calculate": "datum['Foreign hotel guests'] / datum['Total hotel guests'] * 100",
+          "as": "Foreign share"
+        },
+        {
+          "calculate": "datum['Total hotel guests'] / 21910522 * 100",
+          "as": "Total guest strength"
+        },
+        {
+          "calculate": "datum['Total growth'] / 19 * 100",
+          "as": "Total growth score"
+        },
+        {
+          "calculate": "(datum['Foreign growth'] + 15) / 54.4 * 100",
+          "as": "Foreign growth score"
+        },
+        {
+          "fold": [
+            "Total guest strength",
+            "Domestic share",
+            "Foreign share",
+            "Total growth score",
+            "Foreign growth score"
+          ],
+          "as": ["Indicator", "Score"]
+        },
+        {
+          "calculate": "datum.Indicator == 'Total guest strength' ? 'Total guests' : datum.Indicator == 'Domestic share' ? 'Domestic share' : datum.Indicator == 'Foreign share' ? 'Foreign share' : datum.Indicator == 'Total growth score' ? 'Total growth' : 'Foreign growth'",
+          "as": "Display indicator"
+        },
+        {
+          "calculate": "datum['Display indicator'] == 'Total guests' ? 1 : datum['Display indicator'] == 'Domestic share' ? 2 : datum['Display indicator'] == 'Foreign share' ? 3 : datum['Display indicator'] == 'Total growth' ? 4 : 5",
+          "as": "Metric order"
+        },
+        {
+          "calculate": "1.57079632679 - (datum['Metric order'] - 1) / 5 * 6.28318530718",
+          "as": "Angle"
+        },
+        {
+          "calculate": "cos(datum.Angle) * datum.Score",
+          "as": "x"
+        },
+        {
+          "calculate": "sin(datum.Angle) * datum.Score",
+          "as": "y"
+        },
+        {
+          "calculate": "datum['Display indicator'] == 'Total guests' ? format(datum['Total hotel guests'] / 1000000, '.1f') + ' million' : datum['Display indicator'] == 'Domestic share' ? format(datum['Domestic share'], '.1f') + '%' : datum['Display indicator'] == 'Foreign share' ? format(datum['Foreign share'], '.1f') + '%' : datum['Display indicator'] == 'Total growth' ? format(datum['Total growth'], '.1f') + '%' : format(datum['Foreign growth'], '.1f') + '%'",
+          "as": "Actual value"
+        }
+      ],
+      "mark": {
+        "type": "point",
+        "filled": true,
+        "size": 80,
+        "opacity": 1
+      },
+      "encoding": {
+        "x": {
+          "field": "x",
+          "type": "quantitative",
+          "scale": {"domain": [-130, 130]},
+          "axis": null
+        },
+        "y": {
+          "field": "y",
+          "type": "quantitative",
+          "scale": {"domain": [-130, 130]},
+          "axis": null
+        },
+        "color": {
+          "field": "State",
+          "type": "nominal",
+          "scale": {
+            "domain": ["Kuala Lumpur", "Pahang", "Johor", "Selangor"],
+            "range": ["#17324d", "#d4941f", "#c56b3c", "#6f8090"]
+          },
+          "legend": null
+        },
+        "tooltip": [
+          {"field": "State", "type": "nominal"},
+          {"field": "Display indicator", "type": "nominal", "title": "Indicator"},
+          {"field": "Actual value", "type": "nominal", "title": "Actual value"},
+          {"field": "Score", "type": "quantitative", "format": ".1f", "title": "Radar score"}
+        ]
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {"Metric order": 1, "Label": "Total guests"},
+          {"Metric order": 2, "Label": "Domestic share"},
+          {"Metric order": 3, "Label": "Foreign share"},
+          {"Metric order": 4, "Label": "Total growth"},
+          {"Metric order": 5, "Label": "Foreign growth"}
+        ]
+      },
+      "transform": [
+        {
+          "calculate": "1.57079632679 - (datum['Metric order'] - 1) / 5 * 6.28318530718",
+          "as": "Angle"
+        },
+        {
+          "calculate": "cos(datum.Angle) * 118",
+          "as": "x"
+        },
+        {
+          "calculate": "sin(datum.Angle) * 118",
+          "as": "y"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "font": "Inter",
+        "fontSize": 10,
+        "fontWeight": 700,
+        "color": "#475569"
+      },
+      "encoding": {
+        "x": {
+          "field": "x",
+          "type": "quantitative",
+          "scale": {"domain": [-130, 130]},
+          "axis": null
+        },
+        "y": {
+          "field": "y",
+          "type": "quantitative",
+          "scale": {"domain": [-130, 130]},
+          "axis": null
+        },
+        "text": {
+          "field": "Label"
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "x": -122,
+            "y": -116,
+            "Note": "Radar scores are normalised to 0–100 so indicators\nwith different units can be compared on one shape."
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "bottom",
+        "font": "Inter",
+        "fontSize": 10,
+        "fontWeight": 600,
+        "lineBreak": "\n",
+        "color": "#6f8090"
+      },
+      "encoding": {
+        "x": {
+          "field": "x",
+          "type": "quantitative",
+          "scale": {"domain": [-130, 130]},
+          "axis": null
+        },
+        "y": {
+          "field": "y",
+          "type": "quantitative",
+          "scale": {"domain": [-130, 130]},
+          "axis": null
+        },
+        "text": {
+          "field": "Note"
+        }
+      }
+    }
+  ],
+  "config": {
+    "font": "Inter",
+    "background": "transparent",
+    "view": {
+      "stroke": null
+    }
+  }
+}

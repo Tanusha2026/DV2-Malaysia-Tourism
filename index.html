@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Malaysia on the Move</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <main class="page">
+
+    <!-- HERO -->
+    <section class="hero">
+      <p class="eyebrow">Malaysia and Tourism</p>
+      <h1>Malaysia on the Move</h1>
+      <p class="subtitle">
+        Tourism recovery, returning visitors, and the states benefiting most.
+      </p>
+    </section>
+
+    <!-- SECTION 1 -->
+    <section class="section-divider">
+      <p class="eyebrow">Section 1</p>
+      <h2>Has tourism recovered?</h2>
+    </section>
+
+    <section class="story-section">
+      <div class="text-block">
+        <h2>Has tourism recovered?</h2>
+        <p>
+          Malaysia’s tourism recovery is indexed against the 2019 baseline.
+          After a sharp fall in 2020 and 2021, arrivals and receipts recovered
+          strongly from 2022 onward. By 2024, receipts had risen above the
+          2019 level, while arrivals were close to fully recovering.
+        </p>
+      </div>
+
+      <div class="chart-card">
+        <div id="recovery-index-line"></div>
+      </div>
+    </section>
+
+    <section class="story-section">
+      <div class="text-block">
+        <h2>How strong was domestic tourism?</h2>
+        <p>
+          Domestic tourism also strengthened in 2024. Visitor arrivals
+          rose from 213.7 million to 260.1 million, while domestic
+          spending increased from RM84.9 billion to RM106.7 billion.
+        </p>
+      </div>
+
+      <div class="chart-card">
+        <div id="domestic-radial"></div>
+      </div>
+    </section>
+
+    <!-- SECTION 2 -->
+    <section class="section-divider">
+      <p class="eyebrow">Section 2</p>
+      <h2>When do visitors arrive?</h2>
+    </section>
+
+    <section class="story-section">
+      <div class="text-block">
+        <h2>When did visitors arrive?</h2>
+        <p>
+          Monthly arrivals show the rhythm of tourism recovery.
+          Visitor numbers were consistently higher in 2024, with
+          December recording the strongest arrival volume.
+        </p>
+      </div>
+
+      <div class="chart-card">
+        <div id="monthly-heatmap"></div>
+      </div>
+    </section>
+
+    <!-- SECTION 3 -->
+    <section class="section-divider">
+      <p class="eyebrow">Section 3</p>
+      <h2>Where is tourism concentrated in Malaysia?</h2>
+    </section>
+
+    <section class="story-section">
+      <div class="text-block">
+        <h2>Where were hotel guests located?</h2>
+        <p>
+          Hotel guest activity was geographically concentrated across
+          major tourism states. The map allows domestic, foreign, and
+          total hotel guest patterns to be compared interactively.
+        </p>
+      </div>
+
+      <div class="chart-card">
+        <div id="state-hotel-map"></div>
+      </div>
+    </section>
+
+    <section class="story-section">
+      <div class="text-block">
+        <h2>Where did hotel activity concentrate?</h2>
+        <p>
+          Hotel guest activity was strongest in major urban and
+          tourism destinations. Kuala Lumpur recorded the highest
+          total, while Pahang stood out for domestic hotel guests.
+        </p>
+      </div>
+
+      <div class="chart-card">
+        <div id="state-lollipop"></div>
+      </div>
+    </section>
+
+    <!-- SECTION 4 -->
+    <section class="section-divider">
+      <p class="eyebrow">Section 4</p>
+      <h2>Which states show different tourism profiles?</h2>
+    </section>
+
+    <section class="story-section">
+      <div class="text-block">
+        <h2>Were states domestic-led or foreign-led?</h2>
+        <p>
+          State-level hotel activity was not uniform. Kuala Lumpur
+          combined high domestic and foreign hotel demand, while
+          Pahang stood out as a more domestic-led destination.
+        </p>
+      </div>
+
+      <div class="chart-card">
+        <div id="state-scatter"></div>
+      </div>
+    </section>
+
+    <section class="story-section">
+      <div class="text-block">
+        <h2>How did major states differ?</h2>
+        <p>
+          The selected states show different tourism profiles.
+          Kuala Lumpur performed strongly in total and foreign hotel
+          guest activity, while Pahang was more domestic-oriented.
+        </p>
+      </div>
+
+      <div class="chart-card">
+        <div id="state-radar"></div>
+      </div>
+    </section>
+
+    <!-- SECTION 5 -->
+    <section class="section-divider">
+      <p class="eyebrow">Section 5</p>
+      <h2>Who is returning to Malaysia?</h2>
+    </section>
+
+    <section class="story-section">
+      <div class="text-block">
+        <h2>Where did visitors come from?</h2>
+        <p>
+          Malaysia’s leading source markets were concentrated in
+          nearby Asian countries, especially Singapore and Indonesia.
+          The map also shows China’s stronger return in 2024.
+        </p>
+      </div>
+
+      <div class="chart-card">
+        <div id="source-market-map"></div>
+      </div>
+    </section>
+
+    <section class="story-section">
+      <div class="text-block">
+        <h2>Which source markets shifted?</h2>
+        <p>
+          Singapore and Indonesia remained Malaysia’s two largest
+          source markets. China moved into third place in 2024,
+          while Thailand shifted down one rank.
+        </p>
+      </div>
+
+      <div class="chart-card">
+        <div id="source-market-bump"></div>
+      </div>
+    </section>
+
+    <!-- SECTION 6 -->
+    <section class="section-divider">
+      <p class="eyebrow">Section 6</p>
+      <h2>What do visitors spend on?</h2>
+    </section>
+
+    <section class="story-section">
+      <div class="text-block">
+        <h2>What powered the spending rebound?</h2>
+        <p>
+          Most spending categories increased in 2024. Shopping,
+          food, accommodation, and international airfares made
+          the largest contributions to the recovery.
+        </p>
+      </div>
+
+      <div class="chart-card">
+        <div id="expenditure-waterfall"></div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <p>
+        <strong>Author:</strong> Tanusha Banarsee |
+        <strong>Student ID:</strong> 36057592 |
+        <strong>Date of authorship:</strong> 19 May 2026
+      </p>
+
+      <p>
+        <strong>Sources:</strong> Tourism Malaysia, Department of Statistics Malaysia,
+        World Atlas TopoJSON, and other sources listed in the metadata file.
+      </p>
+    </footer>
+
+  </main>
+
+  <script src="js/vega-lite-vis.js"></script>
+</body>
+</html>

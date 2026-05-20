@@ -1,0 +1,264 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 620,
+  "height": 390,
+  "title": {
+    "text": "China moved into Malaysia’s top three source markets",
+    "subtitle": "Rank movement among the top 10 visitor source markets, 2023–2024",
+    "anchor": "start",
+    "fontSize": 16,
+    "subtitleFontSize": 12,
+    "font": "Inter",
+    "subtitleFont": "Inter",
+    "color": "#17324d",
+    "subtitleColor": "#5f6f7f",
+    "subtitlePadding": 6,
+    "offset": 16
+  },
+  "data": {
+    "url": "data/source-market-arrivals.csv"
+  },
+  "transform": [
+    {
+      "calculate": "datum['Rank in 2024'] < datum['Rank in 2023'] ? 'Moved up' : datum['Rank in 2024'] > datum['Rank in 2023'] ? 'Moved down' : 'No rank change'",
+      "as": "Rank movement"
+    },
+    {
+      "calculate": "datum['Rank in 2023'] - datum['Rank in 2024']",
+      "as": "Rank change"
+    },
+    {
+      "fold": [
+        "Rank in 2023",
+        "Rank in 2024"
+      ],
+      "as": ["Year field", "Rank"]
+    },
+    {
+      "calculate": "datum['Year field'] == 'Rank in 2023' ? '2023' : '2024'",
+      "as": "Year"
+    },
+    {
+      "calculate": "datum.Year == '2023' ? datum['Arrivals in 2023'] : datum['Arrivals in 2024']",
+      "as": "Arrivals"
+    },
+    {
+      "calculate": "datum.Arrivals / 1000000",
+      "as": "Arrivals in millions"
+    }
+  ],
+  "layer": [
+    {
+      "mark": {
+        "type": "line",
+        "point": false,
+        "strokeWidth": 3
+      },
+      "encoding": {
+        "x": {
+          "field": "Year",
+          "type": "ordinal",
+          "title": null,
+          "sort": ["2023", "2024"],
+          "axis": {
+            "labelAngle": 0,
+            "labelColor": "#475569"
+          }
+        },
+        "y": {
+          "field": "Rank",
+          "type": "quantitative",
+          "title": "Rank",
+          "scale": {
+            "domain": [10.5, 0.5]
+          },
+          "axis": {
+            "values": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+            "labelColor": "#475569",
+            "titleColor": "#334155",
+            "gridColor": "#e8edf2"
+          }
+        },
+        "detail": {
+          "field": "Country",
+          "type": "nominal"
+        },
+        "color": {
+          "field": "Rank movement",
+          "type": "nominal",
+          "title": null,
+          "scale": {
+            "domain": ["Moved up", "Moved down", "No rank change"],
+            "range": ["#2b7bbb", "#8fa3ad", "#c9d3dc"]
+          },
+          "legend": {
+            "orient": "bottom",
+            "labelFont": "Inter"
+          }
+        },
+        "tooltip": [
+          {
+            "field": "Country",
+            "type": "nominal"
+          },
+          {
+            "field": "Year",
+            "type": "ordinal"
+          },
+          {
+            "field": "Rank",
+            "type": "quantitative",
+            "format": ".0f"
+          },
+          {
+            "field": "Arrivals",
+            "type": "quantitative",
+            "format": ",",
+            "title": "Visitor arrivals"
+          },
+          {
+            "field": "Growth percent(%)",
+            "type": "quantitative",
+            "format": ".1f",
+            "title": "Growth from 2023 to 2024 (%)"
+          }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "circle",
+        "size": 110
+      },
+      "encoding": {
+        "x": {
+          "field": "Year",
+          "type": "ordinal",
+          "sort": ["2023", "2024"]
+        },
+        "y": {
+          "field": "Rank",
+          "type": "quantitative",
+          "scale": {
+            "domain": [10.5, 0.5]
+          }
+        },
+        "color": {
+          "field": "Rank movement",
+          "type": "nominal",
+          "scale": {
+            "domain": ["Moved up", "Moved down", "No rank change"],
+            "range": ["#2b7bbb", "#8fa3ad", "#c9d3dc"]
+          },
+          "legend": null
+        },
+        "tooltip": [
+          {
+            "field": "Country",
+            "type": "nominal"
+          },
+          {
+            "field": "Year",
+            "type": "ordinal"
+          },
+          {
+            "field": "Rank",
+            "type": "quantitative",
+            "format": ".0f"
+          },
+          {
+            "field": "Arrivals",
+            "type": "quantitative",
+            "format": ",",
+            "title": "Visitor arrivals"
+          }
+        ]
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.Year == '2024'"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "dx": 10,
+        "font": "Inter",
+        "fontSize": 10,
+        "fontWeight": 600,
+        "color": "#334155"
+      },
+      "encoding": {
+        "x": {
+          "field": "Year",
+          "type": "ordinal",
+          "sort": ["2023", "2024"]
+        },
+        "y": {
+          "field": "Rank",
+          "type": "quantitative",
+          "scale": {
+            "domain": [10.5, 0.5]
+          }
+        },
+        "text": {
+          "field": "Country"
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "Year": "2024",
+            "Rank": 3,
+            "Note": "China rose from\n4th to 3rd"
+          },
+          {
+            "Year": "2024",
+            "Rank": 4,
+            "Note": "Thailand slipped\nfrom 3rd to 4th"
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "dx": 72,
+        "font": "Inter",
+        "fontSize": 10,
+        "fontWeight": 600,
+        "lineBreak": "\n",
+        "color": "#6f8090"
+      },
+      "encoding": {
+        "x": {
+          "field": "Year",
+          "type": "ordinal",
+          "sort": ["2023", "2024"]
+        },
+        "y": {
+          "field": "Rank",
+          "type": "quantitative",
+          "scale": {
+            "domain": [10.5, 0.5]
+          }
+        },
+        "text": {
+          "field": "Note"
+        }
+      }
+    }
+  ],
+  "config": {
+    "font": "Inter",
+    "background": "transparent",
+    "view": {
+      "stroke": null
+    }
+  }
+}

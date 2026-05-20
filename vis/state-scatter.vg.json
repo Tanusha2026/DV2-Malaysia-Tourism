@@ -1,0 +1,277 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 620,
+  "height": 390,
+  "title": {
+    "text": "States showed different domestic and foreign visitor profiles",
+    "subtitle": "Domestic and foreign hotel guests by state in 2024",
+    "anchor": "start",
+    "fontSize": 16,
+    "subtitleFontSize": 12,
+    "font": "Inter",
+    "subtitleFont": "Inter",
+    "color": "#17324d",
+    "subtitleColor": "#5f6f7f",
+    "subtitlePadding": 6,
+    "offset": 16
+  },
+  "data": {
+    "url": "data/state-hotel-guests.csv"
+  },
+  "transform": [
+    {
+      "calculate": "toNumber(datum['Domestic in 2024']) / 1000000",
+      "as": "Domestic hotel guests in millions"
+    },
+    {
+      "calculate": "toNumber(datum['Foreign in 2024']) / 1000000",
+      "as": "Foreign hotel guests in millions"
+    },
+    {
+      "calculate": "toNumber(datum['Total in 2024']) / 1000000",
+      "as": "Total hotel guests in millions"
+    },
+    {
+      "calculate": "toNumber(datum['Total Growth Percent(%)'])",
+      "as": "Total growth"
+    },
+    {
+      "calculate": "datum['Total growth'] >= 10 ? 'High growth' : datum['Total growth'] < 0 ? 'Decline' : 'Moderate growth'",
+      "as": "Growth group"
+    },
+    {
+      "calculate": "datum.State == 'Johor' || datum.State == 'Selangor' ? datum.State : ''",
+      "as": "Label"
+    }
+  ],
+  "layer": [
+    {
+      "data": {
+        "values": [
+          { "Equal value": 0 },
+          { "Equal value": 13 }
+        ]
+      },
+      "mark": {
+        "type": "line",
+        "strokeDash": [5, 5],
+        "strokeWidth": 1.3,
+        "color": "#c7d0d9"
+      },
+      "encoding": {
+        "x": {
+          "field": "Equal value",
+          "type": "quantitative",
+          "scale": {
+            "domain": [0, 14]
+          }
+        },
+        "y": {
+          "field": "Equal value",
+          "type": "quantitative",
+          "scale": {
+            "domain": [0, 13.5]
+          }
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "Domestic hotel guests in millions": 7.4,
+            "Foreign hotel guests in millions": 7.8,
+            "Note": "Equal domestic\nand foreign line"
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "bottom",
+        "dx": 8,
+        "font": "Inter",
+        "fontSize": 10,
+        "fontWeight": 600,
+        "lineBreak": "\n",
+        "color": "#8a95a1"
+      },
+      "encoding": {
+        "x": {
+          "field": "Domestic hotel guests in millions",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "Foreign hotel guests in millions",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "Note"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "circle",
+        "opacity": 0.8,
+        "stroke": "#ffffff",
+        "strokeWidth": 1.2
+      },
+      "encoding": {
+        "x": {
+          "field": "Domestic hotel guests in millions",
+          "type": "quantitative",
+          "title": "Domestic hotel guests in 2024 (millions)",
+          "scale": {
+            "domain": [0, 14]
+          },
+          "axis": {
+            "gridColor": "#e8edf2",
+            "labelColor": "#475569",
+            "titleColor": "#334155"
+          }
+        },
+        "y": {
+          "field": "Foreign hotel guests in millions",
+          "type": "quantitative",
+          "title": "Foreign hotel guests in 2024 (millions)",
+          "scale": {
+            "domain": [0, 13.5]
+          },
+          "axis": {
+            "gridColor": "#e8edf2",
+            "labelColor": "#475569",
+            "titleColor": "#334155"
+          }
+        },
+        "size": {
+          "field": "Total hotel guests in millions",
+          "type": "quantitative",
+          "title": "Total hotel guests",
+          "scale": {
+            "range": [70, 1800]
+          },
+          "legend": {
+            "orient": "bottom",
+            "labelFont": "Inter",
+            "titleFont": "Inter"
+          }
+        },
+        "color": {
+          "field": "Growth group",
+          "type": "nominal",
+          "title": null,
+          "scale": {
+            "domain": ["High growth", "Moderate growth", "Decline"],
+            "range": ["#b87400", "#e0a12c", "#8fa3ad"]
+          },
+          "legend": {
+            "orient": "bottom",
+            "labelFont": "Inter"
+          }
+        },
+        "tooltip": [
+          {
+            "field": "State",
+            "type": "nominal"
+          },
+          {
+            "field": "Domestic hotel guests in millions",
+            "type": "quantitative",
+            "title": "Domestic guests (millions)",
+            "format": ".2f"
+          },
+          {
+            "field": "Foreign hotel guests in millions",
+            "type": "quantitative",
+            "title": "Foreign guests (millions)",
+            "format": ".2f"
+          },
+          {
+            "field": "Total hotel guests in millions",
+            "type": "quantitative",
+            "title": "Total guests (millions)",
+            "format": ".2f"
+          },
+          {
+            "field": "Total growth",
+            "type": "quantitative",
+            "title": "Total growth (%)",
+            "format": ".1f"
+          }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "dx": 9,
+        "font": "Inter",
+        "fontSize": 10,
+        "fontWeight": 600,
+        "color": "#17324d"
+      },
+      "encoding": {
+        "x": {
+          "field": "Domestic hotel guests in millions",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "Foreign hotel guests in millions",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "Label"
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "Domestic hotel guests in millions": 10.7,
+            "Foreign hotel guests in millions": 12.2,
+            "Note": "Kuala Lumpur combines\nlarge domestic and foreign demand"
+          },
+          {
+            "Domestic hotel guests in millions": 12.4,
+            "Foreign hotel guests in millions": 2.6,
+            "Note": "Pahang is more strongly\ndomestic-led"
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "font": "Inter",
+        "fontSize": 10,
+        "fontWeight": 600,
+        "lineBreak": "\n",
+        "color": "#6f8090"
+      },
+      "encoding": {
+        "x": {
+          "field": "Domestic hotel guests in millions",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "Foreign hotel guests in millions",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "Note"
+        }
+      }
+    }
+  ],
+  "config": {
+    "font": "Inter",
+    "background": "transparent",
+    "view": {
+      "stroke": null
+    }
+  }
+}

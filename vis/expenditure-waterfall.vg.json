@@ -1,0 +1,264 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 620,
+  "height": 360,
+
+  "title": {
+    "text": "Shopping made the largest contribution to the spending rebound",
+    "subtitle": "Waterfall chart of category contributions to the 2023–2024 increase in visitor expenditure",
+    "anchor": "start",
+    "fontSize": 16,
+    "subtitleFontSize": 12,
+    "font": "Inter",
+    "subtitleFont": "Inter",
+    "color": "#17324d",
+    "subtitleColor": "#5f6f7f",
+    "subtitlePadding": 6,
+    "offset": 16
+  },
+
+  "data": {
+    "url": "../data/visitor-expenditure-categories.csv"
+  },
+
+  "transform": [
+    {
+      "calculate": "datum['Value in 2024 (Malaysian ringgit million)'] - datum['Value in 2023 (Malaysian ringgit million)']",
+      "as": "Change"
+    },
+    {
+      "window": [
+        {
+          "op": "rank",
+          "as": "rank"
+        }
+      ],
+      "sort": [
+        {
+          "field": "Change",
+          "order": "descending"
+        }
+      ]
+    },
+    {
+      "window": [
+        {
+          "op": "sum",
+          "field": "Change",
+          "as": "Cumulative"
+        }
+      ],
+      "sort": [
+        {
+          "field": "rank",
+          "order": "ascending"
+        }
+      ]
+    },
+    {
+      "calculate": "datum.Cumulative - datum.Change",
+      "as": "Previous"
+    },
+    {
+      "calculate": "datum.Category == 'Shopping' ? 'Largest increase' : datum.Change < 0 ? 'Decrease' : 'Other increases'",
+      "as": "Change type"
+    },
+    {
+      "calculate": "datum.Change >= 0 ? '+' + format(datum.Change, ',.0f') : format(datum.Change, ',.0f')",
+      "as": "Change label"
+    }
+  ],
+
+  "layer": [
+    {
+      "mark": {
+        "type": "bar",
+        "cornerRadiusEnd": 3,
+        "cornerRadiusTopRight": 3,
+        "cornerRadiusBottomRight": 3
+      },
+      "encoding": {
+        "y": {
+          "field": "Category",
+          "type": "nominal",
+          "sort": {
+            "field": "rank",
+            "order": "ascending"
+          },
+          "title": null,
+          "axis": {
+            "labelLimit": 170,
+            "labelColor": "#475569"
+          }
+        },
+        "x": {
+          "field": "Previous",
+          "type": "quantitative",
+          "scale": {
+            "domain": [0, 34000]
+          },
+          "title": "Cumulative change in visitor expenditure (Malaysian ringgit million)",
+          "axis": {
+            "gridColor": "#e8edf2",
+            "labelColor": "#475569",
+            "titleColor": "#334155"
+          }
+        },
+        "x2": {
+          "field": "Cumulative"
+        },
+        "color": {
+          "field": "Change type",
+          "type": "nominal",
+          "scale": {
+            "domain": ["Largest increase", "Other increases", "Decrease"],
+            "range": ["#b87400", "#e0a12c", "#94a8b5"]
+          },
+          "legend": {
+            "title": null,
+            "orient": "bottom",
+            "labelFont": "Inter"
+          }
+        },
+        "tooltip": [
+          {
+            "field": "Category",
+            "type": "nominal",
+            "title": "Category"
+          },
+          {
+            "field": "Change",
+            "type": "quantitative",
+            "title": "Change (RM million)",
+            "format": ",.2f"
+          },
+          {
+            "field": "Previous",
+            "type": "quantitative",
+            "title": "Start cumulative",
+            "format": ",.2f"
+          },
+          {
+            "field": "Cumulative",
+            "type": "quantitative",
+            "title": "End cumulative",
+            "format": ",.2f"
+          }
+        ]
+      }
+    },
+
+    {
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "dx": 8,
+        "font": "Inter",
+        "fontSize": 11,
+        "fontWeight": 600
+      },
+      "encoding": {
+        "y": {
+          "field": "Category",
+          "type": "nominal",
+          "sort": {
+            "field": "rank",
+            "order": "ascending"
+          }
+        },
+        "x": {
+          "field": "Cumulative",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "Change label"
+        },
+        "color": {
+          "field": "Change type",
+          "type": "nominal",
+          "scale": {
+            "domain": ["Largest increase", "Other increases", "Decrease"],
+            "range": ["#8a5a00", "#a86d00", "#6f8594"]
+          },
+          "legend": null
+        }
+      }
+    },
+
+    {
+      "transform": [
+        {
+          "aggregate": [
+            {
+              "op": "sum",
+              "field": "Change",
+              "as": "NetChange"
+            }
+          ]
+        }
+      ],
+      "mark": {
+        "type": "rule",
+        "color": "#c7d0d9",
+        "strokeDash": [4, 4],
+        "strokeWidth": 1.2
+      },
+      "encoding": {
+        "x": {
+          "field": "NetChange",
+          "type": "quantitative"
+        }
+      }
+    },
+
+    {
+      "transform": [
+        {
+          "aggregate": [
+            {
+              "op": "sum",
+              "field": "Change",
+              "as": "NetChange"
+            }
+          ]
+        },
+        {
+          "calculate": "'Net increase: ' + format(datum.NetChange, ',.0f')",
+          "as": "NetLabel"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "top",
+        "dx": 8,
+        "dy": 4,
+        "font": "Inter",
+        "fontSize": 11,
+        "fontWeight": 600,
+        "color": "#6f8090"
+      },
+      "encoding": {
+        "x": {
+          "field": "NetChange",
+          "type": "quantitative"
+        },
+        "y": {
+          "value": 0
+        },
+        "text": {
+          "field": "NetLabel"
+        }
+      }
+    }
+  ],
+
+  "config": {
+    "font": "Inter",
+    "background": "transparent",
+    "view": {
+      "stroke": null
+    }
+  }
+}

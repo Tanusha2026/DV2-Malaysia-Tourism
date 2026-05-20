@@ -1,0 +1,266 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 620,
+  "height": 390,
+  "title": {
+    "text": "Kuala Lumpur led total hotel guest activity",
+    "subtitle": "Top 10 states and territories by total hotel guests in 2024",
+    "anchor": "start",
+    "fontSize": 16,
+    "subtitleFontSize": 12,
+    "font": "Inter",
+    "subtitleFont": "Inter",
+    "color": "#17324d",
+    "subtitleColor": "#5f6f7f",
+    "subtitlePadding": 6,
+    "offset": 16
+  },
+  "data": {
+    "url": "data/state-hotel-guests.csv"
+  },
+  "transform": [
+    {
+      "calculate": "toNumber(datum['Total in 2024'])",
+      "as": "Total hotel guests"
+    },
+    {
+      "calculate": "toNumber(datum['Domestic in 2024'])",
+      "as": "Domestic hotel guests"
+    },
+    {
+      "calculate": "toNumber(datum['Foreign in 2024'])",
+      "as": "Foreign hotel guests"
+    },
+    {
+      "calculate": "datum['Total hotel guests'] / 1000000",
+      "as": "Total hotel guests in millions"
+    },
+    {
+      "calculate": "datum['Domestic hotel guests'] / datum['Total hotel guests'] * 100",
+      "as": "Domestic share"
+    },
+    {
+      "calculate": "datum['Foreign hotel guests'] / datum['Total hotel guests'] * 100",
+      "as": "Foreign share"
+    },
+    {
+      "window": [
+        {
+          "op": "rank",
+          "as": "Rank"
+        }
+      ],
+      "sort": [
+        {
+          "field": "Total hotel guests",
+          "order": "descending"
+        }
+      ]
+    },
+    {
+      "filter": "datum.Rank <= 10"
+    },
+    {
+      "calculate": "datum.State == 'Kuala Lumpur' ? 'Highest total' : datum.State == 'Pahang' ? 'Highest domestic count' : 'Other leading states'",
+      "as": "State role"
+    },
+    {
+      "calculate": "datum.State == 'Kuala Lumpur' ? 'Highest total hotel guests' : datum.State == 'Pahang' ? 'Highest domestic hotel guest count' : ''",
+      "as": "Annotation"
+    }
+  ],
+  "layer": [
+    {
+      "mark": {
+        "type": "bar",
+        "height": 3,
+        "color": "#b7d8d2"
+      },
+      "encoding": {
+        "y": {
+          "field": "State",
+          "type": "nominal",
+          "sort": {
+            "field": "Total hotel guests",
+            "order": "descending"
+          },
+          "title": null,
+          "axis": {
+            "labelColor": "#475569",
+            "labelLimit": 150
+          }
+        },
+        "x": {
+          "field": "Total hotel guests in millions",
+          "type": "quantitative",
+          "title": "Total hotel guests in 2024 (millions)",
+          "scale": {
+            "domain": [0, 25]
+          },
+          "axis": {
+            "gridColor": "#e8edf2",
+            "labelColor": "#475569",
+            "titleColor": "#334155"
+          }
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "circle",
+        "size": 150
+      },
+      "encoding": {
+        "y": {
+          "field": "State",
+          "type": "nominal",
+          "sort": {
+            "field": "Total hotel guests",
+            "order": "descending"
+          },
+          "title": null
+        },
+        "x": {
+          "field": "Total hotel guests in millions",
+          "type": "quantitative"
+        },
+        "color": {
+          "field": "State role",
+          "type": "nominal",
+          "title": null,
+          "scale": {
+            "domain": [
+              "Highest total",
+              "Highest domestic count",
+              "Other leading states"
+            ],
+            "range": [
+              "#0f766e",
+              "#2a9d8f",
+              "#9fd5cc"
+            ]
+          },
+          "legend": {
+            "orient": "bottom",
+            "labelFont": "Inter"
+          }
+        },
+        "tooltip": [
+          {
+            "field": "State",
+            "type": "nominal",
+            "title": "State"
+          },
+          {
+            "field": "Total hotel guests",
+            "type": "quantitative",
+            "format": ",",
+            "title": "Total hotel guests"
+          },
+          {
+            "field": "Domestic hotel guests",
+            "type": "quantitative",
+            "format": ",",
+            "title": "Domestic hotel guests"
+          },
+          {
+            "field": "Foreign hotel guests",
+            "type": "quantitative",
+            "format": ",",
+            "title": "Foreign hotel guests"
+          },
+          {
+            "field": "Total Growth Percent(%)",
+            "type": "quantitative",
+            "format": ".1f",
+            "title": "Total growth (%)"
+          },
+          {
+            "field": "Domestic share",
+            "type": "quantitative",
+            "format": ".1f",
+            "title": "Domestic share (%)"
+          },
+          {
+            "field": "Foreign share",
+            "type": "quantitative",
+            "format": ".1f",
+            "title": "Foreign share (%)"
+          }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "dx": 8,
+        "font": "Inter",
+        "fontSize": 11,
+        "fontWeight": 600,
+        "color": "#334155"
+      },
+      "encoding": {
+        "y": {
+          "field": "State",
+          "type": "nominal",
+          "sort": {
+            "field": "Total hotel guests",
+            "order": "descending"
+          }
+        },
+        "x": {
+          "field": "Total hotel guests in millions",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "Total hotel guests in millions",
+          "type": "quantitative",
+          "format": ".1f"
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.State == 'Kuala Lumpur' || datum.State == 'Pahang'"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "dx": 48,
+        "font": "Inter",
+        "fontSize": 10,
+        "fontWeight": 600,
+        "color": "#6f8090"
+      },
+      "encoding": {
+        "y": {
+          "field": "State",
+          "type": "nominal",
+          "sort": {
+            "field": "Total hotel guests",
+            "order": "descending"
+          }
+        },
+        "x": {
+          "field": "Total hotel guests in millions",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "Annotation"
+        }
+      }
+    }
+  ],
+  "config": {
+    "font": "Inter",
+    "background": "transparent",
+    "view": {
+      "stroke": null
+    }
+  }
+}
