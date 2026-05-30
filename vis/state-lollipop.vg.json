@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "width": 620,
-  "height": 390,
+  "width": 560,
+  "height": 350,
   "title": {
     "text": "Kuala Lumpur led total hotel guest activity",
     "subtitle": "Top 10 states and territories by total hotel guests in 2024",

@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "width": 620,
-  "height": 420,
+  "height": 430,
   "title": {
     "text": "Major states had different hotel tourism profiles",
     "subtitle": "Radar comparison of selected state-level hotel guest indicators in 2024",
@@ -50,13 +50,13 @@
         "x": {
           "field": "x",
           "type": "quantitative",
-          "scale": {"domain": [-130, 130]},
+          "scale": {"domain": [-145, 145]},
           "axis": null
         },
         "y": {
           "field": "y",
           "type": "quantitative",
-          "scale": {"domain": [-130, 130]},
+          "scale": {"domain": [-145, 145]},
           "axis": null
         },
         "detail": {
@@ -107,13 +107,13 @@
         "x": {
           "field": "Center",
           "type": "quantitative",
-          "scale": {"domain": [-130, 130]},
+          "scale": {"domain": [-145, 145]},
           "axis": null
         },
         "y": {
           "field": "Center",
           "type": "quantitative",
-          "scale": {"domain": [-130, 130]},
+          "scale": {"domain": [-145, 145]},
           "axis": null
         },
         "x2": {"field": "x"},
@@ -210,13 +210,13 @@
         "x": {
           "field": "x",
           "type": "quantitative",
-          "scale": {"domain": [-130, 130]},
+          "scale": {"domain": [-145, 145]},
           "axis": null
         },
         "y": {
           "field": "y",
           "type": "quantitative",
-          "scale": {"domain": [-130, 130]},
+          "scale": {"domain": [-145, 145]},
           "axis": null
         },
         "order": {
@@ -340,13 +340,13 @@
         "x": {
           "field": "x",
           "type": "quantitative",
-          "scale": {"domain": [-130, 130]},
+          "scale": {"domain": [-145, 145]},
           "axis": null
         },
         "y": {
           "field": "y",
           "type": "quantitative",
-          "scale": {"domain": [-130, 130]},
+          "scale": {"domain": [-145, 145]},
           "axis": null
         },
         "order": {
@@ -471,13 +471,13 @@
         "x": {
           "field": "x",
           "type": "quantitative",
-          "scale": {"domain": [-130, 130]},
+          "scale": {"domain": [-145, 145]},
           "axis": null
         },
         "y": {
           "field": "y",
           "type": "quantitative",
-          "scale": {"domain": [-130, 130]},
+          "scale": {"domain": [-145, 145]},
           "axis": null
         },
         "color": {
@@ -532,13 +532,13 @@
         "x": {
           "field": "x",
           "type": "quantitative",
-          "scale": {"domain": [-130, 130]},
+          "scale": {"domain": [-145, 145]},
           "axis": null
         },
         "y": {
           "field": "y",
           "type": "quantitative",
-          "scale": {"domain": [-130, 130]},
+          "scale": {"domain": [-145, 145]},
           "axis": null
         },
         "text": {
@@ -550,8 +550,8 @@
       "data": {
         "values": [
           {
-            "x": -122,
-            "y": -116,
+            "x": -128,
+            "y": -125,
             "Note": "Radar scores are normalised to 0–100 so indicators\nwith different units can be compared on one shape."
           }
         ]
@@ -570,13 +570,13 @@
         "x": {
           "field": "x",
           "type": "quantitative",
-          "scale": {"domain": [-130, 130]},
+          "scale": {"domain": [-145, 145]},
           "axis": null
         },
         "y": {
           "field": "y",
           "type": "quantitative",
-          "scale": {"domain": [-130, 130]},
+          "scale": {"domain": [-145, 145]},
           "axis": null
         },
         "text": {

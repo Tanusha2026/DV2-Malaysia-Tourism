@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "width": 620,
-  "height": 360,
+  "width": 580,
+  "height": 340,
   "title": {
     "text": "Tourism receipts recovered faster than arrivals",
     "subtitle": "Index compares 2019–2024 against the 2019 baseline",

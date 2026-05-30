@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "width": 620,
-  "height": 390,
+  "width": 560,
+  "height": 360,
   "title": {
     "text": "States showed different domestic and foreign visitor profiles",
     "subtitle": "Domestic and foreign hotel guests by state in 2024",

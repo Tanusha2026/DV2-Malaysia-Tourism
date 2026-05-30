@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "width": 620,
-  "height": 390,
+  "height": 430,
   "title": {
     "text": "Domestic tourism grew strongly in 2024",
     "subtitle": "Radial bars compare 2024 growth against 2023 for domestic arrivals and spending",
@@ -188,7 +188,7 @@
         "type": "text",
         "align": "left",
         "baseline": "middle",
-        "dx": 190,
+        "dx": 220,
         "dy": -55,
         "font": "Inter",
         "fontSize": 11,
@@ -211,7 +211,7 @@
         "type": "text",
         "align": "left",
         "baseline": "middle",
-        "dx": -200,
+        "dx": -225,
         "dy": -10,
         "font": "Inter",
         "fontSize": 11,
@@ -228,8 +228,8 @@
       "data": {
         "values": [
           {
-            "x": -205,
-            "y": 140,
+            "x": -280,
+            "y": 250,
             "Note": "Both domestic indicators\nexpanded by more than 20%"
           }
         ]
