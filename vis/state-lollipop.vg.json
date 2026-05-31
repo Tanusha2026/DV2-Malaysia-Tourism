@@ -108,7 +108,7 @@
     {
       "mark": {
         "type": "circle",
-        "size": 150
+        "size": 170
       },
       "encoding": {
         "y": {

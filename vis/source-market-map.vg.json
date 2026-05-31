@@ -110,12 +110,15 @@
           "type": "quantitative",
           "title": "Visitor arrivals",
           "scale": {
-            "range": [70, 2600]
+            "domain": [0, 19000000],
+            "range": [30, 2600]
           },
           "legend": {
             "orient": "bottom",
-            "labelFont": "Inter",
-            "titleFont": "Inter"
+            "direction": "horizontal",
+            "values": [0, 5000000, 10000000, 15000000],
+            "labelExpr": "datum.value == 0 ? '0' : format(datum.value / 1000000, '.0f') + 'M'",
+            "titleFontWeight": "bold"
           }
         },
         "color": {
@@ -124,7 +127,7 @@
           "title": null,
           "scale": {
             "domain": ["Top three source markets", "Other source markets"],
-            "range": ["#0f766e", "#9fd5cc"]
+            "range": ["#0f766e", "#7DB8AF"]
           },
           "legend": {
             "orient": "bottom",

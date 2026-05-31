@@ -146,7 +146,7 @@
           "title": null,
           "scale": {
             "domain": ["High growth", "Moderate growth", "Decline"],
-            "range": ["#b87400", "#e0a12c", "#8fa3ad"]
+            "range": ["#4F8F78", "#8FB8A8", "#B7C3CB"]
           },
           "legend": {
             "orient": "bottom",

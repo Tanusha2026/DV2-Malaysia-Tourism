@@ -71,7 +71,13 @@ h1 {
   margin: 0;
   font-size: 15px;
   line-height: 1.65;
-  color: #52616f;
+  color: #34495e;
+}
+
+.text-block strong,
+.section-divider strong {
+  font-weight: 700;
+  color: #102a43;
 }
 
 .chart-card {

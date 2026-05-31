@@ -4,7 +4,7 @@
   "height": 360,
   "title": {
     "text": "China moved into Malaysia’s top three source markets",
-    "subtitle": "Rank movement among the top 10 visitor source markets, 2023–2024",
+    "subtitle": "Rank movement among the top 10 source markets, 2022–2024",
     "anchor": "start",
     "fontSize": 16,
     "subtitleFontSize": 12,
@@ -16,35 +16,20 @@
     "offset": 16
   },
   "data": {
-    "url": "data/source-market-arrivals.csv"
+    "url": "data/source-market-bump.csv"
   },
   "transform": [
     {
-      "calculate": "datum['Rank in 2024'] < datum['Rank in 2023'] ? 'Moved up' : datum['Rank in 2024'] > datum['Rank in 2023'] ? 'Moved down' : 'No rank change'",
-      "as": "Rank movement"
+      "calculate": "toString(datum.Year)",
+      "as": "Year label"
     },
     {
-      "calculate": "datum['Rank in 2023'] - datum['Rank in 2024']",
-      "as": "Rank change"
+      "calculate": "toNumber(datum.Rank)",
+      "as": "Rank number"
     },
     {
-      "fold": [
-        "Rank in 2023",
-        "Rank in 2024"
-      ],
-      "as": ["Year field", "Rank"]
-    },
-    {
-      "calculate": "datum['Year field'] == 'Rank in 2023' ? '2023' : '2024'",
-      "as": "Year"
-    },
-    {
-      "calculate": "datum.Year == '2023' ? datum['Arrivals in 2023'] : datum['Arrivals in 2024']",
-      "as": "Arrivals"
-    },
-    {
-      "calculate": "datum.Arrivals / 1000000",
-      "as": "Arrivals in millions"
+      "calculate": "datum.Country == 'China' || datum.Country == 'Philippines' ? 'Moved up' : datum.Country == 'Thailand' || datum.Country == 'Brunei' || datum.Country == 'India' ? 'Moved down' : 'No rank change'",
+      "as": "Overall movement"
     }
   ],
   "layer": [
@@ -56,27 +41,29 @@
       },
       "encoding": {
         "x": {
-          "field": "Year",
+          "field": "Year label",
           "type": "ordinal",
+          "sort": ["2022", "2023", "2024"],
           "title": null,
-          "sort": ["2023", "2024"],
           "axis": {
             "labelAngle": 0,
-            "labelColor": "#475569"
+            "labelColor": "#475569",
+            "labelFont": "Inter"
           }
         },
         "y": {
-          "field": "Rank",
+          "field": "Rank number",
           "type": "quantitative",
-          "title": "Rank",
           "scale": {
             "domain": [10.5, 0.5]
           },
           "axis": {
-            "values": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-            "labelColor": "#475569",
-            "titleColor": "#334155",
-            "gridColor": "#e8edf2"
+            "title": "Rank",
+            "tickMinStep": 1,
+            "labelFont": "Inter",
+            "titleFont": "Inter",
+            "labelColor": "#52616f",
+            "titleColor": "#17324d"
           }
         },
         "detail": {
@@ -84,12 +71,12 @@
           "type": "nominal"
         },
         "color": {
-          "field": "Rank movement",
+          "field": "Overall movement",
           "type": "nominal",
           "title": null,
           "scale": {
             "domain": ["Moved up", "Moved down", "No rank change"],
-            "range": ["#2b7bbb", "#8fa3ad", "#c9d3dc"]
+            "range": ["#6E3F1F", "#B9834A", "#D9C3A5"]
           },
           "legend": {
             "orient": "bottom",
@@ -102,25 +89,20 @@
             "type": "nominal"
           },
           {
-            "field": "Year",
-            "type": "ordinal"
+            "field": "Year label",
+            "type": "ordinal",
+            "title": "Year"
           },
           {
-            "field": "Rank",
+            "field": "Rank number",
             "type": "quantitative",
-            "format": ".0f"
+            "format": ".0f",
+            "title": "Rank"
           },
           {
-            "field": "Arrivals",
-            "type": "quantitative",
-            "format": ",",
-            "title": "Visitor arrivals"
-          },
-          {
-            "field": "Growth percent(%)",
-            "type": "quantitative",
-            "format": ".1f",
-            "title": "Growth from 2023 to 2024 (%)"
+            "field": "Overall movement",
+            "type": "nominal",
+            "title": "Overall movement"
           }
         ]
       }
@@ -132,23 +114,23 @@
       },
       "encoding": {
         "x": {
-          "field": "Year",
+          "field": "Year label",
           "type": "ordinal",
-          "sort": ["2023", "2024"]
+          "sort": ["2022", "2023", "2024"]
         },
         "y": {
-          "field": "Rank",
+          "field": "Rank number",
           "type": "quantitative",
           "scale": {
             "domain": [10.5, 0.5]
           }
         },
         "color": {
-          "field": "Rank movement",
+          "field": "Overall movement",
           "type": "nominal",
           "scale": {
             "domain": ["Moved up", "Moved down", "No rank change"],
-            "range": ["#2b7bbb", "#8fa3ad", "#c9d3dc"]
+            "range": ["#7B6FA8", "#8EA3AD", "#D5DEE5"]
           },
           "legend": null
         },
@@ -158,19 +140,15 @@
             "type": "nominal"
           },
           {
-            "field": "Year",
-            "type": "ordinal"
+            "field": "Year label",
+            "type": "ordinal",
+            "title": "Year"
           },
           {
-            "field": "Rank",
+            "field": "Rank number",
             "type": "quantitative",
-            "format": ".0f"
-          },
-          {
-            "field": "Arrivals",
-            "type": "quantitative",
-            "format": ",",
-            "title": "Visitor arrivals"
+            "format": ".0f",
+            "title": "Rank"
           }
         ]
       }
@@ -178,7 +156,7 @@
     {
       "transform": [
         {
-          "filter": "datum.Year == '2024'"
+          "filter": "datum['Year label'] == '2024'"
         }
       ],
       "mark": {
@@ -193,12 +171,12 @@
       },
       "encoding": {
         "x": {
-          "field": "Year",
+          "field": "Year label",
           "type": "ordinal",
-          "sort": ["2023", "2024"]
+          "sort": ["2022", "2023", "2024"]
         },
         "y": {
-          "field": "Rank",
+          "field": "Rank number",
           "type": "quantitative",
           "scale": {
             "domain": [10.5, 0.5]
@@ -213,13 +191,13 @@
       "data": {
         "values": [
           {
-            "Year": "2024",
-            "Rank": 3,
-            "Note": "China rose from\n4th to 3rd"
+            "Year label": "2024",
+            "Rank number": 3,
+            "Note": "China rose from\n6th to 3rd"
           },
           {
-            "Year": "2024",
-            "Rank": 4,
+            "Year label": "2024",
+            "Rank number": 4,
             "Note": "Thailand slipped\nfrom 3rd to 4th"
           }
         ]
@@ -228,21 +206,21 @@
         "type": "text",
         "align": "left",
         "baseline": "middle",
-        "dx": 72,
+        "dx": 85,
         "font": "Inter",
         "fontSize": 10,
-        "fontWeight": 600,
+        "fontWeight": 700,
         "lineBreak": "\n",
         "color": "#6f8090"
       },
       "encoding": {
         "x": {
-          "field": "Year",
+          "field": "Year label",
           "type": "ordinal",
-          "sort": ["2023", "2024"]
+          "sort": ["2022", "2023", "2024"]
         },
         "y": {
-          "field": "Rank",
+          "field": "Rank number",
           "type": "quantitative",
           "scale": {
             "domain": [10.5, 0.5]
@@ -259,6 +237,11 @@
     "background": "transparent",
     "view": {
       "stroke": null
+    },
+    "axis": {
+      "gridColor": "#e6edf2",
+      "domainColor": "#888888",
+      "tickColor": "#888888"
     }
   }
 }
